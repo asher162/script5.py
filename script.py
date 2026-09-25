@@ -80,7 +80,7 @@ if audio is not None:
             # Comandos
             def app(nome, abrir):
                 if nome.lower() in texto.lower():
-                    st.link_button('abrir'nome, abrir)
+                    st.link_button(nome, abrir)
 
             app(
                 "youtube",
