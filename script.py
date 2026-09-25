@@ -4,7 +4,7 @@ import gtts as gt
 import os
 
 # API da Groq
-client = Groq(api_key="")
+client = Groq(api_key="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")
 
 # Guarda qual áudio já foi processado
 if "audio_processado" not in st.session_state:
@@ -80,7 +80,7 @@ if audio is not None:
             # Comandos
             def app(nome, abrir):
                 if nome.lower() in texto.lower():
-                    os.system(abrir)
+                    st.link_button('abrir'nome, abrir)
 
             app(
                 "youtube",
