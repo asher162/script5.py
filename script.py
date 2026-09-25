@@ -4,7 +4,7 @@ import gtts as gt
 import os
 
 # API da Groq
-client = Groq(api_key="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")
+client = Groq(api_key="")
 
 # Guarda qual áudio já foi processado
 if "audio_processado" not in st.session_state:
