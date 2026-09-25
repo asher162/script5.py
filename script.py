@@ -84,12 +84,12 @@ if audio is not None:
 
             app(
                 "youtube",
-                "start chrome https://www.youtube.com/"
+                "https://www.youtube.com/"
             )
 
             app(
                 "modulador",
-                "start chrome https://cad.onshape.com/documents?resourceType=resourceuserowner&nodeId=6a4284772d1b25f7e6d58364"
+                "https://cad.onshape.com/documents?resourceType=resourceuserowner&nodeId=6a4284772d1b25f7e6d58364"
             )
 
         except Exception as erro:
