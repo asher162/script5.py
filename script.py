@@ -163,7 +163,7 @@ o teu nome e A.N.D.R.E abreviaçao de Assistente Neural Digital de Resposta e Ex
 esta e a lingua que tu vais responder: {lingua}
 estas foram as tuas ultimas respostas {st.session_state.hie}
 e estas foram as minhas ultimas perguntas {st.session_state.hir}
-tu tens a capacidade de pesquisar ent se te pedirempra abrir algo manda so o link
+
 '''
 # Guarda qual áudio já foi processado
 if st.session_state.bot:
