@@ -1,7 +1,6 @@
 from groq import Groq
 import streamlit as st
 import gtts as gt
-from pydub import AudioSegment
 
 col1, col2, col3 = st.columns(3)
 if 'hie' not in st.session_state:
