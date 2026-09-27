@@ -193,13 +193,13 @@ def falar(texto):
 # FUNÇÃO PARA ABRIR SITES
 # =========================================================
 
-def app(nome, abrir, texto):
+def app(nome, abrir):
 
     if nome.lower() in texto.lower():
 
         # Só funciona para abrir no computador onde
         # o Streamlit está a executar.
-        os.system(abrir)
+        st.link_button(abrir)
 
 
 # =========================================================
@@ -255,17 +255,12 @@ if st.session_state.bot:
             # Comandos
             app(
                 "abrir youtube",
-                "start chrome https://www.youtube.com/",
-                texto
+                "https://www.youtube.com/"
             )
 
             app(
                 "abrir modulador",
-                "start chrome https://cad.onshape.com/documents?resourceType=resourceuserowner&nodeId=6a4284772d1b25f7e6d58364",
-                texto
+                "https://cad.onshape.com/documents?resourceType=resourceuserowner&nodeId=6a4284772d1b25f7e6d58364"
             )
 
-            app(
-                "abrir google",
-                "start chro
 
