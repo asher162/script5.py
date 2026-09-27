@@ -197,10 +197,16 @@ if st.session_state.bot:
     falar = gt.gTTS(a, lang=idiomas_gtts[st.session_state.ln])
 
     audio_resposta = "resposta.mp3"
-    falar.save(audio_resposta)
+    falar.save("resposta.mp3")
 
+    audio = AudioSegment.from_mp3("resposta.mp3")
+    
+    # 1.3 = 30% mais rápido
+    audio_rapido = audio.speedup(playback_speed=1.3)
+    
+    audio_rapido.export("resposta_rapida.mp3", format="mp3")
     st.audio(
-        audio_resposta,
+        audio_rapido,
         format="audio/mp3",
         autoplay=True
     )
@@ -317,10 +323,17 @@ else:
                 falar = gt.gTTS(a, lang=idiomas_gtts[st.session_state.ln])
 
                 audio_resposta = "resposta.mp3"
-                falar.save(audio_resposta)
+                falar.save("resposta.mp3")
+
+                audio = AudioSegment.from_mp3("resposta.mp3")
+                
+                # 1.3 = 30% mais rápido
+                audio_rapido = audio.speedup(playback_speed=1.3)
+                
+                audio_rapido.export("resposta_rapida.mp3", format="mp3")
 
                 st.audio(
-                    audio_resposta,
+                    audio_rapido,
                     format="audio/mp3",
                     autoplay=True
                 )
