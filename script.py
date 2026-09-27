@@ -1,48 +1,106 @@
-
 from groq import Groq
 import streamlit as st
 import gtts as gt
-import os
-import re
 
 
-# =========================================================
-# CONFIGURAÇÃO
-# =========================================================
-
-# Coloca a tua nova API key aqui
-client = Groq(api_key="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")
-
-
-# =========================================================
-# MEMÓRIA
-# =========================================================
-
-if "hie" not in st.session_state:
+col1, col2, col3 = st.columns(3)
+if 'hie' not in st.session_state:
     st.session_state.hie = []
-
-if "hir" not in st.session_state:
+if 'hir' not in st.session_state:
     st.session_state.hir = []
-
-
-# =========================================================
-# CONFIGURAÇÕES DO ANDRÉ
-# =========================================================
-
 if "bot" not in st.session_state:
-    st.session_state.bot = True
-
+    st.session_state.bot = False
 if "conf" not in st.session_state:
     st.session_state.conf = False
-
 if "ln" not in st.session_state:
     st.session_state.ln = "pt"
+with col1:
+    if st.button("Escrever"):
+        st.session_state.bot = True
 
+with col2:
+    if st.button("Falar"):
+        st.session_state.bot = False
+with col3:
+    if st.button('conf'):
+        if st.session_state.conf:
+            st.session_state.conf = False
+        else:
+            st.session_state.conf = True
 
-# =========================================================
-# IDIOMAS
-# =========================================================
+    if st.session_state.conf == True:
 
+        if st.sidebar.button("Português"):
+            st.session_state.ln = "pt"
+            st.rerun()
+        elif st.sidebar.button("Inglês"):
+            st.session_state.ln = "en"
+            st.rerun()
+        elif st.sidebar.button("Espanhol"):
+            st.session_state.ln = "es"
+            st.rerun()
+        elif st.sidebar.button("Francês"):
+            st.session_state.ln = "fr"
+            st.rerun()
+        elif st.sidebar.button("Alemão"):
+            st.session_state.ln = "de"
+            st.rerun()
+        elif st.sidebar.button("Italiano"):
+            st.session_state.ln = "it"
+            st.rerun()
+        elif st.sidebar.button("Japonês"):
+            st.session_state.ln = "ja"
+            st.rerun()
+        elif st.sidebar.button("Coreano"):
+            st.session_state.ln = "ko"
+            st.rerun()
+        elif st.sidebar.button("Chinês"):
+            st.session_state.ln = "zh-CN"
+            st.rerun()
+        elif st.sidebar.button("Russo"):
+            st.session_state.ln = "ru"
+            st.rerun()
+        elif st.sidebar.button("Árabe"):
+            st.session_state.ln = "ar"
+            st.rerun()
+        elif st.sidebar.button("Hindi"):
+            st.session_state.ln = "hi"
+            st.rerun()
+        elif st.sidebar.button("Turco"):
+            st.session_state.ln = "tr"
+            st.rerun()
+        elif st.sidebar.button("Holandês"):
+            st.session_state.ln = "nl"
+            st.rerun()
+        elif st.sidebar.button("Polaco"):
+            st.session_state.ln = "pl"
+            st.rerun()
+        elif st.sidebar.button("Sueco"):
+            st.session_state.ln = "sv"
+            st.rerun()
+        elif st.sidebar.button("Dinamarquês"):
+            st.session_state.ln = "da"
+            st.rerun()
+        elif st.sidebar.button("Norueguês"):
+            st.session_state.ln = "no"
+            st.rerun()
+        elif st.sidebar.button("Finlandês"):
+            st.session_state.ln = "fi"
+            st.rerun()
+        elif st.sidebar.button("Checo"):
+            st.session_state.ln = "cs"
+            st.rerun()
+        elif st.sidebar.button("Grego"):
+            st.session_state.ln = "el"
+            st.rerun()
+        elif st.sidebar.button("Hebraico"):
+            st.session_state.ln = "he"
+            st.rerun()
+        elif st.sidebar.button("Indonésio"):
+            st.session_state.ln = "id"
+            st.rerun()
+        elif st.sidebar.button("Vietnamita"):
+            st.session_state.ln = "vi"
 nomes_linguas = {
     "pt": "português",
     "en": "inglês",
@@ -69,153 +127,59 @@ nomes_linguas = {
     "id": "indonésio",
     "vi": "vietnamita"
 }
-
+idiomas_gtts = {
+    "pt": "pt",
+    "en": "en",
+    "es": "es",
+    "fr": "fr",
+    "de": "de",
+    "it": "it",
+    "ja": "ja",
+    "ko": "ko",
+    "zh-CN": "zh-CN",
+    "ru": "ru",
+    "ar": "ar",
+    "hi": "hi",
+    "tr": "tr",
+    "nl": "nl",
+    "pl": "pl",
+    "sv": "sv",
+    "da": "da",
+    "no": "no",
+    "fi": "fi",
+    "cs": "cs",
+    "el": "el",
+    "he": "he",
+    "id": "id",
+    "vi": "vi"
+}
 
 lingua = nomes_linguas[st.session_state.ln]
+# API da Groq
+client = Groq(api_key="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")
+personalidade = f'''u es uma ia de uso pessoal se mais humano so esplica algo se ficar explicito que tens de 
+responder se nao e so um conevressa  fala sempre portugues 
+o teu nome e A.N.D.R.E abreviaçao de Assistente Neural Digital de Resposta e Execução e tu tens a capacidade de abiri ent se te pedirem pra abiri algum site so diz (claro so apertar no boatao abaixo)
+esta e a lingua que tu vais responder: {lingua}
+estas foram as tuas ultimas respostas {st.session_state.hie}
+e estas foram as minhas ultimas perguntas {st.session_state.hir}
+tu tens a capacidade de pesquisar ent se te pedirempra abrir algo manda so o link
+'''
+# Guarda qual áudio já foi processado
+if st.session_state.bot:
+    escrve=st.chat_input('pergunta')
+    texto = str(escrve)
 
+    st.write("Tu:", texto)
 
-# =========================================================
-# BOTÕES
-# =========================================================
-
-col1, col2, col3 = st.columns(3)
-
-with col1:
-    if st.button("✍️ Escrever"):
-        st.session_state.bot = True
-        st.rerun()
-
-with col2:
-    if st.button("🎤 Falar"):
-        st.session_state.bot = False
-        st.rerun()
-
-with col3:
-    if st.button("⚙️ Conf"):
-        st.session_state.conf = not st.session_state.conf
-        st.rerun()
-
-
-# =========================================================
-# CONFIGURAÇÕES
-# =========================================================
-
-if st.session_state.conf:
-
-    st.sidebar.title("⚙️ Configurações")
-
-    st.sidebar.write("Idioma:")
-
-    for codigo, nome in nomes_linguas.items():
-
-        if st.sidebar.button(nome.capitalize()):
-
-            st.session_state.ln = codigo
-
-            st.rerun()
-
-
-# =========================================================
-# PERSONA
-# =========================================================
-
-persona = f"""
-Tu és uma IA de uso pessoal.
-
-O teu nome é A.N.D.R.E.
-Significa Assistente Neural Digital de Resposta e Execução.
-
-Sê humano e natural.
-
-Não expliques coisas sem necessidade.
-Se a conversa for casual, conversa normalmente.
-
-Sê direto nas respostas, mas não demasiado curto.
-
-Tu tens um sistema para abrir aplicações e sites.
-Quando o mestre pedir para abrir alguma coisa,
-o código tratará disso automaticamente.
-se te pedirem pra perquisar so escreve o url nada mais nem nada menos
-e se tem pedirem pra abrir algo so dis que estas a abrir
-
-Não digas que não consegues abrir sites.
-Apenas responde naturalmente.
-
-O idioma atual das respostas é:
-{lingua}
-
-Estas são algumas respostas anteriores:
-{st.session_state.hie}
-
-Estas são algumas perguntas anteriores:
-{st.session_state.hir}
-"""
-
-
-# =========================================================
-# FUNÇÃO PARA FALAR
-# =========================================================
-
-def falar(texto):
-
-    # Remove símbolos que podem ficar estranhos no áudio
-    texto_fala = re.sub(
-        r'[*.,!?;:()\[\]{}"\'`]',
-        '',
-        texto
-    )
-
-    texto_fala = texto_fala.replace("...", "")
-    texto_fala = texto_fala.replace("-", " ")
-    texto_fala = texto_fala.replace("/", " ")
-
-    audio_resposta = "resposta.mp3"
-
-    try:
-        voz = gt.gTTS(
-            texto_fala,
-            lang=st.session_state.ln
-        )
-
-        voz.save(audio_resposta)
-
-        st.audio(
-            audio_resposta,
-            format="audio/mp3",
-            autoplay=True
-        )
-
-    except Exception as erro:
-        st.error(f"Erro na voz: {erro}")
-
-
-# =========================================================
-# FUNÇÃO PARA ABRIR SITES
-# =========================================================
-
-def app(nome, abrir):
-
-    if nome.lower() in texto.lower():
-
-        # Só funciona para abrir no computador onde
-        # o Streamlit está a executar.
-        st.link_button(abrir)
-
-
-# =========================================================
-# FUNÇÃO PRINCIPAL DA IA
-# =========================================================
-
-def responder(texto):
-
+    # Envia para a IA
     resposta = client.chat.completions.create(
-
         model="openai/gpt-oss-20b",
-
         messages=[
             {
                 "role": "system",
-                "content": persona
+                "content": personalidade
+
             },
             {
                 "role": "user",
@@ -224,41 +188,171 @@ def responder(texto):
         ]
     )
 
-    return resposta.choices[0].message.content
+    # Resposta da IA
+    a = resposta.choices[0].message.content
+
+    st.write(a)
+
+    # Faz o André falar
+    falar = gt.gTTS(a, lang=idiomas_gtts[st.session_state.ln])
+
+    audio_resposta = "resposta.mp3"
+    falar.save(audio_resposta)
+
+    st.audio(
+        audio_resposta,
+        format="audio/mp3",
+        autoplay=True
+    )
 
 
-# =========================================================
-# MODO ESCREVER
-# =========================================================
+    # Comandos
+    def app(nome, abrir):
+        if nome.lower() in texto.lower():
+            st.link_button(nome, abrir)
 
-if st.session_state.bot:
 
-    texto = st.chat_input("Pergunta ao André...")
+    app(
+        "youtube",
+        "https://www.youtube.com/"
+    )
 
-    if texto:
+    app(
+        "modulador",
+        "https://cad.onshape.com/documents?resourceType=resourceuserowner&nodeId=6a4284772d1b25f7e6d58364"
+    )
+    st.session_state.hir.append(texto)
+    st.session_state.hie.append(a)
+    if st.session_state.conf == False:
+        for c in st.session_state.hie:
+            st.sidebar.write(c)
 
-        try:
+else:
+    if "audio_processado" not in st.session_state:
+        st.session_state.audio_processado = None
 
-            a = responder(texto)
+    # Microfone
+    audio = st.audio_input("🎤 Fala com o André")
 
-            st.write("Tu:", texto)
+    if audio is not None:
 
-            st.write(a)
+        # Cria um ID único para esta gravação
+        audio_id = hash(audio.getvalue())
 
-            # Memória
-            st.session_state.hir.append(texto)
-            st.session_state.hie.append(a)
+        # Só processa se for uma gravação nova
+        if audio_id != st.session_state.audio_processado:
 
-            # Voz
-            falar(a)
+            # Marca como processado
+            st.session_state.audio_processado = audio_id
 
-            # Comandos
-            app(
-                "abrir youtube",
-                "https://www.youtube.com/"
-            )
+            try:
+                # Guarda o áudio
+                with open("audio.wav", "wb") as f:
+                    f.write(audio.getvalue())
 
-            app(
-                "abrir modulador",
-                "https://cad.onshape.com/documents?resourceType=resourceuserowner&nodeId=6a4284772d1b25f7e6d58364"
-            )
+                # Transforma voz em texto
+                with open("audio.wav", "rb") as arquivo:
+                    transcricao = client.audio.transcriptions.create(
+                        file=("audio.wav", arquivo.read()),
+                        model="whisper-large-v3-turbo",
+                        response_format="text",
+                        language=st.session_state.ln
+                    )
+
+                texto = str(transcricao)
+
+                st.write("Tu:", texto)
+
+                # Envia para a IA
+                resposta = client.chat.completions.create(
+                    model="openai/gpt-oss-20b",
+                    messages=[
+                        {
+                            "role": "system",
+                            "content": personalidade
+
+                        },
+                        {
+                            "role": "user",
+                            "content": texto
+                        }
+                    ]
+                )
+
+                # Resposta da IA
+                a = resposta.choices[0].message.content
+
+                st.write(a)
+
+                # Faz o André falar
+                falar = gt.gTTS(a, lang=idiomas_gtts[st.session_state.ln])
+
+                audio_resposta = "resposta.mp3"
+                falar.save(audio_resposta)
+
+                st.audio(
+                    audio_resposta,
+                    format="audio/mp3",
+                    autoplay=True
+                )
+
+
+                # Comandos
+                def app(nome, abrir):
+                    if nome.lower() in texto.lower():
+                        st.write('''aperta aqui
+                                          \   /
+                                           \ /
+                                            V''')
+                        st.link_button(nome, abrir)
+
+
+                app('abrir youtube', 'https://www.youtube.com/')
+                app('abrir modulador',
+                    'https://cad.onshape.com/documents?resourceType=resourceuserowner&nodeId=6a4284772d1b25f7e6d58364')
+                app('abrir google', 'https://www.google.com/')
+                app('abrir gta', 'https://github.com/')
+                app('abrir chatgpt', 'https://chatgpt.com/')
+                app('abrir discord', 'https://discord.com/app')
+                app('abrir whatsapp', 'https://web.whatsapp.com/')
+                app('abrir instagram', 'https://www.instagram.com/')
+                app('abrir música', 'https://open.spotify.com/')
+                app('abrir tiktok', 'https://www.tiktok.com/')
+                app('abrir gmail', 'https://mail.google.com/')
+                app('abrir google maps', 'https://maps.google.com/')
+                app('abrir google drive', 'https://drive.google.com/')
+                app('abrir google docs', 'https://docs.google.com/')
+                app('abrir wikipedia', 'https://www.wikipedia.org/')
+                app('abrir netflix', 'https://www.netflix.com/')
+                app('abrir reddit', 'https://www.reddit.com/')
+                app('abrir facebook', 'https://www.facebook.com/')
+                app('abrir x', 'https://x.com/')
+                app('abrir linkedin', 'https://www.linkedin.com/')
+                app('abrir pinterest', 'https://www.pinterest.com/')
+                app('abrir twitch', 'https://www.twitch.tv/')
+                app('abrir canva', 'https://www.canva.com/')
+                app('abrir notion', 'https://www.notion.so/')
+                app('abrir trello', 'https://trello.com/')
+                app('abrir figma', 'https://www.figma.com/')
+                app('abrir stackoverflow', 'https://stackoverflow.com/')
+                app('abrir w3schools', 'https://www.w3schools.com/')
+                app('abrir python', 'https://www.python.org/')
+                app('abrir arduino', 'https://www.arduino.cc/')
+                app('abrir autodesk', 'https://www.autodesk.com/')
+                app('abrir thingiverse', 'https://www.thingiverse.com/')
+                app('abrir printables', 'https://www.printables.com/')
+                app('abrir creality', 'https://www.creality.com/')
+                app('abrir coursera', 'https://www.coursera.org/')
+                app('abrir udemy', 'https://www.udemy.com/')
+                app('abrir khan academy', 'https://www.khanacademy.org/')
+                app('abrir wolfram alpha', 'https://www.wolframalpha.com/')
+                app('abrir desmos', 'https://www.desmos.com/calculator')
+                app('abrir geogebra', 'https://www.geogebra.org/')
+
+                st.session_state.hir.append(texto)
+                st.session_state.hie.append(a)
+                if st.session_state.conf == False:
+                    for c in st.session_state.hie:
+                        st.sidebar.write(c)
+            except Exception as erro:
+                st.error(f"Erro: {erro}")
