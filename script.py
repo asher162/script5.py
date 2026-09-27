@@ -1,96 +1,282 @@
+```python
 from groq import Groq
 import streamlit as st
 import gtts as gt
 import os
+import re
 
-# API da Groq
+
+# =========================================================
+# CONFIGURAÇÃO
+# =========================================================
+
+# Coloca a tua nova API key aqui
 client = Groq(api_key="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")
 
-# Guarda qual áudio já foi processado
-if "audio_processado" not in st.session_state:
-    st.session_state.audio_processado = None
 
-# Microfone
-audio = st.audio_input("🎤 Fala com o André")
+# =========================================================
+# MEMÓRIA
+# =========================================================
 
-if audio is not None:
+if "hie" not in st.session_state:
+    st.session_state.hie = []
 
-    # Cria um ID único para esta gravação
-    audio_id = hash(audio.getvalue())
+if "hir" not in st.session_state:
+    st.session_state.hir = []
 
-    # Só processa se for uma gravação nova
-    if audio_id != st.session_state.audio_processado:
 
-        # Marca como processado
-        st.session_state.audio_processado = audio_id
+# =========================================================
+# CONFIGURAÇÕES DO ANDRÉ
+# =========================================================
+
+if "bot" not in st.session_state:
+    st.session_state.bot = True
+
+if "conf" not in st.session_state:
+    st.session_state.conf = False
+
+if "ln" not in st.session_state:
+    st.session_state.ln = "pt"
+
+
+# =========================================================
+# IDIOMAS
+# =========================================================
+
+nomes_linguas = {
+    "pt": "português",
+    "en": "inglês",
+    "es": "espanhol",
+    "fr": "francês",
+    "de": "alemão",
+    "it": "italiano",
+    "ja": "japonês",
+    "ko": "coreano",
+    "zh-CN": "chinês",
+    "ru": "russo",
+    "ar": "árabe",
+    "hi": "hindi",
+    "tr": "turco",
+    "nl": "holandês",
+    "pl": "polaco",
+    "sv": "sueco",
+    "da": "dinamarquês",
+    "no": "norueguês",
+    "fi": "finlandês",
+    "cs": "checo",
+    "el": "grego",
+    "he": "hebraico",
+    "id": "indonésio",
+    "vi": "vietnamita"
+}
+
+
+lingua = nomes_linguas[st.session_state.ln]
+
+
+# =========================================================
+# BOTÕES
+# =========================================================
+
+col1, col2, col3 = st.columns(3)
+
+with col1:
+    if st.button("✍️ Escrever"):
+        st.session_state.bot = True
+        st.rerun()
+
+with col2:
+    if st.button("🎤 Falar"):
+        st.session_state.bot = False
+        st.rerun()
+
+with col3:
+    if st.button("⚙️ Conf"):
+        st.session_state.conf = not st.session_state.conf
+        st.rerun()
+
+
+# =========================================================
+# CONFIGURAÇÕES
+# =========================================================
+
+if st.session_state.conf:
+
+    st.sidebar.title("⚙️ Configurações")
+
+    st.sidebar.write("Idioma:")
+
+    for codigo, nome in nomes_linguas.items():
+
+        if st.sidebar.button(nome.capitalize()):
+
+            st.session_state.ln = codigo
+
+            st.rerun()
+
+
+# =========================================================
+# PERSONA
+# =========================================================
+
+persona = f"""
+Tu és uma IA de uso pessoal.
+
+O teu nome é A.N.D.R.E.
+Significa Assistente Neural Digital de Resposta e Execução.
+
+O nome do teu mestre é Asher.
+Chama-o de mestre.
+
+Ele gosta de:
+engenharia,
+física,
+química,
+matemática,
+geometria,
+programação Python,
+Arduino
+e ciências em geral.
+
+Sê humano e natural.
+
+Não expliques coisas sem necessidade.
+Se a conversa for casual, conversa normalmente.
+
+Sê direto nas respostas, mas não demasiado curto.
+
+Tu tens um sistema para abrir aplicações e sites.
+Quando o mestre pedir para abrir alguma coisa,
+o código tratará disso automaticamente.
+
+Não digas que não consegues abrir sites.
+Apenas responde naturalmente.
+
+O idioma atual das respostas é:
+{lingua}
+
+Estas são algumas respostas anteriores:
+{st.session_state.hie}
+
+Estas são algumas perguntas anteriores:
+{st.session_state.hir}
+"""
+
+
+# =========================================================
+# FUNÇÃO PARA FALAR
+# =========================================================
+
+def falar(texto):
+
+    # Remove símbolos que podem ficar estranhos no áudio
+    texto_fala = re.sub(
+        r'[*.,!?;:()\[\]{}"\'`]',
+        '',
+        texto
+    )
+
+    texto_fala = texto_fala.replace("...", "")
+    texto_fala = texto_fala.replace("-", " ")
+    texto_fala = texto_fala.replace("/", " ")
+
+    audio_resposta = "resposta.mp3"
+
+    try:
+        voz = gt.gTTS(
+            texto_fala,
+            lang=st.session_state.ln
+        )
+
+        voz.save(audio_resposta)
+
+        st.audio(
+            audio_resposta,
+            format="audio/mp3",
+            autoplay=True
+        )
+
+    except Exception as erro:
+        st.error(f"Erro na voz: {erro}")
+
+
+# =========================================================
+# FUNÇÃO PARA ABRIR SITES
+# =========================================================
+
+def app(nome, abrir, texto):
+
+    if nome.lower() in texto.lower():
+
+        # Só funciona para abrir no computador onde
+        # o Streamlit está a executar.
+        os.system(abrir)
+
+
+# =========================================================
+# FUNÇÃO PRINCIPAL DA IA
+# =========================================================
+
+def responder(texto):
+
+    resposta = client.chat.completions.create(
+
+        model="openai/gpt-oss-20b",
+
+        messages=[
+            {
+                "role": "system",
+                "content": persona
+            },
+            {
+                "role": "user",
+                "content": texto
+            }
+        ]
+    )
+
+    return resposta.choices[0].message.content
+
+
+# =========================================================
+# MODO ESCREVER
+# =========================================================
+
+if st.session_state.bot:
+
+    texto = st.chat_input("Pergunta ao André...")
+
+    if texto:
 
         try:
-            # Guarda o áudio
-            with open("audio.wav", "wb") as f:
-                f.write(audio.getvalue())
 
-            # Transforma voz em texto
-            with open("audio.wav", "rb") as arquivo:
-                transcricao = client.audio.transcriptions.create(
-                    file=("audio.wav", arquivo.read()),
-                    model="whisper-large-v3-turbo",
-                    response_format="text",
-                    language="pt"
-                )
-
-            texto = str(transcricao)
+            a = responder(texto)
 
             st.write("Tu:", texto)
 
-            # Envia para a IA
-            resposta = client.chat.completions.create(
-                model="openai/gpt-oss-20b",
-                messages=[
-                    {
-                        "role": "system",
-                        "content": """tu es uma ia de uso pessoal se mais humano
-                        so esplica algo se ficar explicito que tens de responder se nao e so um conevressa inpireta no jarvis do homeme de ferro
-                        fala sempre portugues o teu nome e andre e tu tens a capacidade de abiri ent se te pedirem pra abiri algum site so diz (claro so apertar no boatao abaixo)
-                        """
-                    },
-                    {
-                        "role": "user",
-                        "content": texto
-                    }
-                ]
-            )
-
-            # Resposta da IA
-            a = resposta.choices[0].message.content
-
             st.write(a)
 
-            # Faz o André falar
-            falar = gt.gTTS(a, lang="pt-BR")
+            # Memória
+            st.session_state.hir.append(texto)
+            st.session_state.hie.append(a)
 
-            audio_resposta = "resposta.mp3"
-            falar.save(audio_resposta)
-
-            st.audio(
-                audio_resposta,
-                format="audio/mp3",
-                autoplay=True
-            )
+            # Voz
+            falar(a)
 
             # Comandos
-            def app(nome, abrir):
-                if nome.lower() in texto.lower():
-                    st.link_button(nome, abrir)
-
             app(
-                "youtube",
-                "https://www.youtube.com/"
+                "abrir youtube",
+                "start chrome https://www.youtube.com/",
+                texto
             )
 
             app(
-                "modulador",
-                "https://cad.onshape.com/documents?resourceType=resourceuserowner&nodeId=6a4284772d1b25f7e6d58364"
+                "abrir modulador",
+                "start chrome https://cad.onshape.com/documents?resourceType=resourceuserowner&nodeId=6a4284772d1b25f7e6d58364",
+                texto
             )
 
-        except Exception as erro:
-            st.error(f"Erro: {erro}")
+            app(
+                "abrir google",
+                "start chro
+```
