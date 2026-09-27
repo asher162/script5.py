@@ -1,4 +1,4 @@
-```python
+
 from groq import Groq
 import streamlit as st
 import gtts as gt
@@ -125,19 +125,6 @@ Tu és uma IA de uso pessoal.
 O teu nome é A.N.D.R.E.
 Significa Assistente Neural Digital de Resposta e Execução.
 
-O nome do teu mestre é Asher.
-Chama-o de mestre.
-
-Ele gosta de:
-engenharia,
-física,
-química,
-matemática,
-geometria,
-programação Python,
-Arduino
-e ciências em geral.
-
 Sê humano e natural.
 
 Não expliques coisas sem necessidade.
@@ -148,6 +135,8 @@ Sê direto nas respostas, mas não demasiado curto.
 Tu tens um sistema para abrir aplicações e sites.
 Quando o mestre pedir para abrir alguma coisa,
 o código tratará disso automaticamente.
+se te pedirem pra perquisar so escreve o url nada mais nem nada menos
+e se tem pedirem pra abrir algo so dis que estas a abrir
 
 Não digas que não consegues abrir sites.
 Apenas responde naturalmente.
@@ -279,4 +268,4 @@ if st.session_state.bot:
             app(
                 "abrir google",
                 "start chro
-```
+
