@@ -262,5 +262,3 @@ if st.session_state.bot:
                 "abrir modulador",
                 "https://cad.onshape.com/documents?resourceType=resourceuserowner&nodeId=6a4284772d1b25f7e6d58364"
             )
-
-
