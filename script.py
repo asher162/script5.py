@@ -159,7 +159,7 @@ from groq import Groq
 import streamlit as st
 
 client = Groq(
-    api_key=st.secrets["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"]
+    api_key=st.secrets["api"]
 )
 personalidade = f'''u es uma ia de uso pessoal se mais humano so esplica algo se ficar explicito que tens de 
 responder se nao e so um conevressa  fala sempre portugues 
