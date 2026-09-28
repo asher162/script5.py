@@ -101,6 +101,7 @@ with col3:
             st.rerun()
         elif st.sidebar.button("Vietnamita"):
             st.session_state.ln = "vi"
+            st.rerun()
         apps('youtube', 'https://www.youtube.com/')
         apps('modulador',
              'https://cad.onshape.com/documents?resourceType=resourceuserowner&nodeId=6a4284772d1b25f7e6d58364')
@@ -238,9 +239,7 @@ idiomas_gtts = {
 }
 
 lingua = nomes_linguas[st.session_state.ln]
-# API da Groq
-from groq import Groq
-import streamlit as st
+# API da Gro
 
 client = Groq(
     api_key=st.secrets["api"]
