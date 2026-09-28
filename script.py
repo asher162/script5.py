@@ -155,7 +155,12 @@ idiomas_gtts = {
 
 lingua = nomes_linguas[st.session_state.ln]
 # API da Groq
-client = Groq(api_key="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")
+from groq import Groq
+import streamlit as st
+
+client = Groq(
+    api_key=st.secrets["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"]
+)
 personalidade = f'''u es uma ia de uso pessoal se mais humano so esplica algo se ficar explicito que tens de 
 responder se nao e so um conevressa  fala sempre portugues 
 o teu nome e A.N.D.R.E abreviaçao de Assistente Neural Digital de Resposta e Execução e tu tens a capacidade de abiri ent se te pedirem pra abiri algum site so diz (claro so apertar no boatao abaixo)
