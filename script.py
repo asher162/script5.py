@@ -29,7 +29,7 @@ with col3:
             st.session_state.conf = True
 
     if st.session_state.conf == True:
-
+        st.sidebar.title('_____linguas_____')
         if st.sidebar.button("Português"):
             st.session_state.ln = "pt"
             st.rerun()
@@ -102,6 +102,7 @@ with col3:
         elif st.sidebar.button("Vietnamita"):
             st.session_state.ln = "vi"
             st.rerun()
+        st.sidebar.title('_____sites_____')
         apps('youtube', 'https://www.youtube.com/')
         apps('modulador',
              'https://cad.onshape.com/documents?resourceType=resourceuserowner&nodeId=6a4284772d1b25f7e6d58364')
