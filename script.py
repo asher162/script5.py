@@ -167,92 +167,95 @@ e estas foram as minhas ultimas perguntas {st.session_state.hir}
 # Guarda qual áudio já foi processado
 if st.session_state.bot:
     escrve=st.chat_input('pergunta')
-    texto = str(escrve)
-
-    st.write("Tu:", texto)
-
-    # Envia para a IA
-    resposta = client.chat.completions.create(
-        model="openai/gpt-oss-20b",
-        messages=[
-            {
-                "role": "system",
-                "content": personalidade
-
-            },
-            {
-                "role": "user",
-                "content": texto
-            }
-        ]
-    )
-
-    # Resposta da IA
-    a = resposta.choices[0].message.content
-
-    st.write(a)
-
-    # Faz o André falar
-    falar = gt.gTTS(a, lang=idiomas_gtts[st.session_state.ln], slow=False)
-
-    audio_resposta = "resposta.mp3"
-    falar.save("resposta.mp3")
-    st.audio(
-        audio_resposta,
-        format="audio/mp3",
-        autoplay=True
-    )
-
-
-    # Comandos
-    def app(nome, abrir):
-        if nome.lower() in texto.lower():
-            st.link_button(nome, abrir)
-    app('youtube', 'https://www.youtube.com/')
-    app('modulador', 'https://cad.onshape.com/documents?resourceType=resourceuserowner&nodeId=6a4284772d1b25f7e6d58364')
-    app('google', 'https://www.google.com/')
-    app('gta', 'https://github.com/')
-    app('chatgpt', 'https://chatgpt.com/')
-    app('discord', 'https://discord.com/app')
-    app('whatsapp', 'https://web.whatsapp.com/')
-    app('instagram', 'https://www.instagram.com/')
-    app('música', 'https://open.spotify.com/')
-    app('tiktok', 'https://www.tiktok.com/')
-    app('gmail', 'https://mail.google.com/')
-    app('google maps', 'https://maps.google.com/')
-    app('google drive', 'https://drive.google.com/')
-    app('google docs', 'https://docs.google.com/')
-    app('wikipedia', 'https://www.wikipedia.org/')
-    app('netflix', 'https://www.netflix.com/')
-    app('reddit', 'https://www.reddit.com/')
-    app('facebook', 'https://www.facebook.com/')
-    app('x', 'https://x.com/')
-    app('linkedin', 'https://www.linkedin.com/')
-    app('pinterest', 'https://www.pinterest.com/')
-    app('twitch', 'https://www.twitch.tv/')
-    app('canva', 'https://www.canva.com/')
-    app('notion', 'https://www.notion.so/')
-    app('trello', 'https://trello.com/')
-    app('figma', 'https://www.figma.com/')
-    app('stackoverflow', 'https://stackoverflow.com/')
-    app('w3schools', 'https://www.w3schools.com/')
-    app('python', 'https://www.python.org/')
-    app('arduino', 'https://www.arduino.cc/')
-    app('autodesk', 'https://www.autodesk.com/')
-    app('thingiverse', 'https://www.thingiverse.com/')
-    app('printables', 'https://www.printables.com/')
-    app('creality', 'https://www.creality.com/')
-    app('coursera', 'https://www.coursera.org/')
-    app('udemy', 'https://www.udemy.com/')
-    app('khan academy', 'https://www.khanacademy.org/')
-    app('wolfram alpha', 'https://www.wolframalpha.com/')
-    app('desmos', 'https://www.desmos.com/calculator')
-    app('geogebra', 'https://www.geogebra.org/')
-    st.session_state.hir.append(texto)
-    st.session_state.hie.append(a)
-    if st.session_state.conf == False:
-        for c in st.session_state.hie:
-            st.sidebar.write(c)
+    if escrve.lower == 'none':
+        st.write('escreve')
+    else:
+        texto = str(escrve)
+    
+        st.write("Tu:", texto)
+    
+        # Envia para a IA
+        resposta = client.chat.completions.create(
+            model="openai/gpt-oss-20b",
+            messages=[
+                {
+                    "role": "system",
+                    "content": personalidade
+    
+                },
+                {
+                    "role": "user",
+                    "content": texto
+                }
+            ]
+        )
+    
+        # Resposta da IA
+        a = resposta.choices[0].message.content
+    
+        st.write(a)
+    
+        # Faz o André falar
+        falar = gt.gTTS(a, lang=idiomas_gtts[st.session_state.ln], slow=False)
+    
+        audio_resposta = "resposta.mp3"
+        falar.save("resposta.mp3")
+        st.audio(
+            audio_resposta,
+            format="audio/mp3",
+            autoplay=True
+        )
+    
+    
+        # Comandos
+        def app(nome, abrir):
+            if nome.lower() in texto.lower():
+                st.link_button(nome, abrir)
+        app('youtube', 'https://www.youtube.com/')
+        app('modulador', 'https://cad.onshape.com/documents?resourceType=resourceuserowner&nodeId=6a4284772d1b25f7e6d58364')
+        app('google', 'https://www.google.com/')
+        app('gta', 'https://github.com/')
+        app('chatgpt', 'https://chatgpt.com/')
+        app('discord', 'https://discord.com/app')
+        app('whatsapp', 'https://web.whatsapp.com/')
+        app('instagram', 'https://www.instagram.com/')
+        app('música', 'https://open.spotify.com/')
+        app('tiktok', 'https://www.tiktok.com/')
+        app('gmail', 'https://mail.google.com/')
+        app('google maps', 'https://maps.google.com/')
+        app('google drive', 'https://drive.google.com/')
+        app('google docs', 'https://docs.google.com/')
+        app('wikipedia', 'https://www.wikipedia.org/')
+        app('netflix', 'https://www.netflix.com/')
+        app('reddit', 'https://www.reddit.com/')
+        app('facebook', 'https://www.facebook.com/')
+        app('x', 'https://x.com/')
+        app('linkedin', 'https://www.linkedin.com/')
+        app('pinterest', 'https://www.pinterest.com/')
+        app('twitch', 'https://www.twitch.tv/')
+        app('canva', 'https://www.canva.com/')
+        app('notion', 'https://www.notion.so/')
+        app('trello', 'https://trello.com/')
+        app('figma', 'https://www.figma.com/')
+        app('stackoverflow', 'https://stackoverflow.com/')
+        app('w3schools', 'https://www.w3schools.com/')
+        app('python', 'https://www.python.org/')
+        app('arduino', 'https://www.arduino.cc/')
+        app('autodesk', 'https://www.autodesk.com/')
+        app('thingiverse', 'https://www.thingiverse.com/')
+        app('printables', 'https://www.printables.com/')
+        app('creality', 'https://www.creality.com/')
+        app('coursera', 'https://www.coursera.org/')
+        app('udemy', 'https://www.udemy.com/')
+        app('khan academy', 'https://www.khanacademy.org/')
+        app('wolfram alpha', 'https://www.wolframalpha.com/')
+        app('desmos', 'https://www.desmos.com/calculator')
+        app('geogebra', 'https://www.geogebra.org/')
+        st.session_state.hir.append(texto)
+        st.session_state.hie.append(a)
+        if st.session_state.conf == False:
+            for c in st.session_state.hie:
+                st.sidebar.write(c)
 
 else:
     if "audio_processado" not in st.session_state:
