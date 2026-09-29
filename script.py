@@ -1,6 +1,8 @@
 from groq import Groq
 import streamlit as st
 import gtts as gt
+st.set_page_config(page_title="A.N.D.R.E",
+                   layout="wide")
 def apps(nomes, links):
     st.sidebar.link_button(nomes, links)
 col1, col2, col3 = st.columns(3)
