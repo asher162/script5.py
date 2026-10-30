@@ -1,6 +1,7 @@
 from groq import Groq
 import streamlit as st
 import gtts as gt
+import json
 st.set_page_config(page_title="A.N.D.R.E",
                    layout="wide")
 def apps(nomes, links):
@@ -519,3 +520,7 @@ else:
                         st.sidebar.write(c)
             except Exception as erro:
                 st.error(f"Erro: {erro}")
+    with open("save.json", "w") as andreiaper:
+        json.dump(st.session_state.hir, andreiaper)
+    with open("sav.json", "w") as andreiares:
+        json.dump(st.session_state.hie, andreiares)
