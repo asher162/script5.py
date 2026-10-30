@@ -4,21 +4,17 @@ import gtts as gt
 import json
 st.set_page_config(page_title="A.N.D.R.E",
                    layout="wide")
-with open("save.json", "w") as andreiaper:
-      json.dump(st.session_state.hir, andreiaper)
-with open("sav.json", "w") as andreiares:
-    json.dump(st.session_state.hie, andreiares)
 def apps(nomes, links):
     st.sidebar.link_button(nomes, links)
 col1, col2, col3 = st.columns(3)
 if 'hie' not in st.session_state:
     st.session_state.hie = []
     with open("sav.json") as andreiares:
-      st.session_state.hie.append(json.load(andreiares))
+          st.session_state.hie.append(json.load(andreiares))
 if 'hir' not in st.session_state:
     st.session_state.hir = []
     with open("save.json") as andreiaper:
-      st.session_state.hir.append(json.load(andreiaper))
+          st.session_state.hir.append(json.load(andreiaper))
 if "bot" not in st.session_state:
     st.session_state.bot = False
 if "conf" not in st.session_state:
