@@ -9,12 +9,18 @@ def apps(nomes, links):
 col1, col2, col3 = st.columns(3)
 if 'hie' not in st.session_state:
     st.session_state.hie = []
-    with open("sav.json") as andreiares:
-          st.session_state.hie.append(json.load(andreiares))
+  try:
+        with open("sav.json") as andreiares:
+              st.session_state.hie.append(json.load(andreiares))
+  except:
+    st.session_state.hie = []
 if 'hir' not in st.session_state:
     st.session_state.hir = []
-    with open("save.json") as andreiaper:
-          st.session_state.hir.append(json.load(andreiaper))
+  try:
+      with open("save.json") as andreiaper:
+            st.session_state.hir.append(json.load(andreiaper))
+  except:
+    st.session_state.hir = []
 if "bot" not in st.session_state:
     st.session_state.bot = False
 if "conf" not in st.session_state:
