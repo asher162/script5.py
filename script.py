@@ -529,7 +529,7 @@ else:
                 if st.session_state.conf == False:
                     for c in st.session_state.hie:
                         st.sidebar.write(c)
-                except Exception as erro:
+            except Exception as erro:
                     st.error(f"Erro: {erro}")
     with open("save.json", "w") as andreiaper:
         json.dump(st.session_state.hir, andreiaper)
