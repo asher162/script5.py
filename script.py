@@ -4,6 +4,10 @@ import gtts as gt
 import json
 st.set_page_config(page_title="A.N.D.R.E",
                    layout="wide")
+with open("save.json", "w") as andreiaper:
+      json.dump(st.session_state.hir, andreiaper)
+with open("sav.json", "w") as andreiares:
+    json.dump(st.session_state.hie, andreiares)
 def apps(nomes, links):
     st.sidebar.link_button(nomes, links)
 col1, col2, col3 = st.columns(3)
@@ -258,6 +262,7 @@ o teu nome e A.N.D.R.E abreviaçao de Assistente Neural Digital de Resposta e Ex
 esta e a lingua que tu vais responder: {lingua}
 estas foram as tuas ultimas respostas {st.session_state.hie}
 e estas foram as minhas ultimas perguntas {st.session_state.hir}
+lembra de conferir sempre a tua memoria antes de responder pra ter maior chance de susseço
 
 '''
 # Guarda qual áudio já foi processado
