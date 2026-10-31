@@ -27,6 +27,8 @@ if "conf" not in st.session_state:
     st.session_state.conf = False
 if "ln" not in st.session_state:
     st.session_state.ln = "pt"
+if "fla" not in st.session_state:
+    st.session_state.fla = False
 with col1:
     if st.button("Escrever"):
         st.session_state.bot = True
@@ -42,6 +44,12 @@ with col3:
             st.session_state.conf = True
 
     if st.session_state.conf == True:
+        st.sidebar.title('_____falar_____')
+        if st.sidebar.button('falar'):
+          if st.session_state.fla == False:
+            st.session_state.fla = True
+          elif st.session_state.fla == True:
+            st.session_state.fla = False
         st.sidebar.title('_____linguas_____')
         if st.sidebar.button("Português"):
             st.session_state.ln = "pt"
@@ -295,15 +303,15 @@ if st.session_state.bot:
 
     st.write(a)
 
-    # Faz o André falar
-    falar = gt.gTTS(a, lang=idiomas_gtts[st.session_state.ln], slow=False)
-
-    audio_resposta = "resposta.mp3"
-    falar.save("resposta.mp3")
-    st.audio(
-        audio_resposta,
-        format="audio/mp3",
-        autoplay=True
+    if st.session_state.fla == False:
+        falar = gt.gTTS(a, lang=idiomas_gtts[st.session_state.ln], slow=False)
+    
+        audio_resposta = "resposta.mp3"
+        falar.save("resposta.mp3")
+        st.audio(
+            audio_resposta,
+            format="audio/mp3",
+            autoplay=True
     )
 
 
@@ -459,17 +467,17 @@ else:
 
                 st.write(a)
 
-                # Faz o André falar
-                falar = gt.gTTS(a, lang=idiomas_gtts[st.session_state.ln], slow=False)
-
-                audio_resposta = "resposta.mp3"
-                falar.save("resposta.mp3")
-
-                st.audio(
-                    audio_resposta,
-                    format="audio/mp3",
-                    autoplay=True
-                )
+                if st.session_state.fla == False:
+                    falar = gt.gTTS(a, lang=idiomas_gtts[st.session_state.ln], slow=False)
+    
+                    audio_resposta = "resposta.mp3"
+                    falar.save("resposta.mp3")
+    
+                    st.audio(
+                        audio_resposta,
+                        format="audio/mp3",
+                        autoplay=True
+                    )
 
 
                 # Comandos
